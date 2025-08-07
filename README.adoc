@@ -1,0 +1,62 @@
+= Vehicle
+Thomas Stütz
+1.0.0, {docdate}
+ifndef::imagesdir[:imagesdir: images]
+:icons: font
+:sectnums:    // Nummerierung der Überschriften / section numbering
+// :toc:
+// :toclevels: 1
+:experimental:
+//https://gist.github.com/dcode/0cfbf2699a1fe9b46ff04c41721dda74?permalink_comment_id=3948218
+ifdef::env-github[]
+:tip-caption: :bulb:
+:note-caption: :information_source:
+:important-caption: :heavy_exclamation_mark:
+:caution-caption: :fire:
+:warning-caption: :warning:
+endif::[]
+
+* Es werden die Daten im JSON-Format als auch FORM-URLENCODED verarbeitet
+
+* mit `/vehicle/initdata` wird die Datenbank zurückgesetzt
+
+* die http-Methoden werden auf der Konsole geloggt:
++
+image::request-logs.png[]
+
+
+
+* Swagger: http://localhost:8090/q/swagger-ui/
+
+* Bilder:
+** http://localhost:8090/download/ford-torino-1969.jpeg[^]
+** http://localhost:8090/download/volkswagen-beetle-1975.jpeg[^]
+** ...
+
+* Folgende Bilder stehen zur Verfügung:
+
+** alfa-romeo-2000-berlina-1971.jpeg
+** buick-century-riviera-1955.jpeg
+** buick-gsx-1970.jpeg
+** chevrolet-impala-1960.jpeg
+** chevrolet-nova-1967.jpeg
+** fiat-multipla-1962.jpeg
+** ford-escort-ghia-1.6-1982.jpeg
+** ford-mustang-fastback-1968.jpeg
+** ford-torino-1969.jpeg
+** gmc-100-pickup-1954.jpeg
+** opel-1200-1960.jpeg
+** opel-blitz-pritsche-1952.jpeg
+** opel-gt-1970.jpeg
+** opel-kadett-b-1970.jpeg
+** opel-kapitaen-1956.jpeg
+** opel-rekord-1700p1-1957.jpeg
+** opel-rekord-c-1970.jpeg
+** pontiac-gto-1967.jpeg
+** pontiac-streamliner-1949.jpg
+** renault-grand-scenic-2018.png
+** volkswagen-beetle-1975-2.jpeg
+** volkswagen-beetle-1975.jpeg
+
+* Zusätzlich noch
+** missing-image.png

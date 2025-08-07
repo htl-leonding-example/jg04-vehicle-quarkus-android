@@ -1,0 +1,18 @@
+@startuml
+top to bottom direction
+skinparam linetype ortho
+
+class Image {
+  - id: Long
+  - vehicle: Vehicle
+  - fileName: String
+}
+class Vehicle {
+  - model: String
+  - id: Long
+  - year: int
+  - brand: String
+}
+
+Vehicle  "1 " <-- "*" Image
+@enduml

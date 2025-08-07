@@ -1,0 +1,107 @@
+### list all vehicles
+
+GET http://localhost:8090/vehicle
+Content-Type: application/json
+
+### create vehicle
+
+POST http://localhost:8090/vehicle
+Content-Type: application/json
+
+{
+  "brand": "Opel",
+  "model": "Blitz Pritsche",
+  "year": 1952
+}
+
+### create vehicle - id is not existing
+
+POST http://localhost:8090/vehicle
+Content-Type: application/json
+
+
+{
+  "id": 123456789,
+  "brand": "Opel",
+  "model": "Blitz Pritsche",
+  "year": 1952
+}
+
+### create vehicle - id exists already
+
+POST http://localhost:8090/vehicle
+Content-Type: application/json
+
+{
+  "id": 19,
+  "brand": "Opel",
+  "model": "Blitz Pritsche",
+  "year": 1952
+}
+
+### findById - id not existing
+
+GET http://localhost:8090/vehicle/1234567
+Content-Type: application/json
+
+### findById - id is existing
+
+GET http://localhost:8090/vehicle/20
+Content-Type: application/json
+
+### update - alle Felder
+
+PATCH http://localhost:8090/vehicle
+Content-Type: application/json
+
+{
+  "id": 19,
+  "brand": "Opeln",
+  "model": "Blitz Pritschen",
+  "year": 1953
+}
+
+### update - nur ein Feld
+
+PATCH http://localhost:8090/vehicle
+Content-Type: application/json
+
+{
+  "id": 18,
+  "model": "Blitz Pritschen"
+}
+
+###
+### PUT - alle Felder
+
+PUT http://localhost:8090/vehicle
+Content-Type: application/json
+
+{
+  "id": 16,
+  "brand": "aaa",
+  "model": "bbb",
+  "year": 10
+}
+
+### PUT - nur ein Feld
+
+PUT http://localhost:8090/vehicle
+Content-Type: application/json
+
+{
+  "id": 17,
+  "model": "ccc"
+}
+
+### DELETE
+
+DELETE http://localhost:8090/vehicle/1
+Content-Type: application/json
+
+### list all vehicles with filenames
+
+GET http://localhost:8090/vehicle/img
+Content-Type: application/json
+
+###
