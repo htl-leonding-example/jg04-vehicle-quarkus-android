@@ -19,21 +19,30 @@ public class VehicleMapper implements Mapper<Vehicle, VehicleDto> {
     VehicleRepository vehicleRepository;
 
     public VehicleDto toResource(Vehicle vehicle) {
-        if (vehicle.getId() == null) {
-            throw new RuntimeException("vehicle id is missing when converting to VehicleDto");
-        }
 
-        Vehicle v = vehicleRepository.findById(vehicle.getId());
-        List<Image> images = imageRepository.list("vehicle", v);
-        List<String> fileNames = images
-                .stream()
-                .map(it -> it.getFileName())
-                .toList();
+        List<Image> images = null;
+        List<String> fileNames = null;
+        List<byte[]> imageData = null;
+
+        Vehicle v = vehicleRepository.findByBrandAndModel(vehicle.getBrand(), vehicle.getModel());
+        if (v != null) {
+            images = imageRepository.list("vehicle", v);
+            fileNames = images
+                    .stream()
+                    .map(it -> it.getFileName())
+                    .toList();
+            imageData = images
+                    .stream()
+                    .filter(it -> it.getImageData() != null)
+                    .map(it -> it.getImageData())
+                    .toList();
+        }
         return new VehicleDto(
                 v.getBrand(),
                 v.getModel(),
                 v.getYear(),
-                fileNames
+                fileNames,
+                imageData
         );
     }
 

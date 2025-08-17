@@ -48,27 +48,22 @@ public class VehicleResource {
                 .map(v -> vehicleMapper.toResource(v))
                 .toList();
 
+
+
+
         return Response.ok(dtos).build();
     }
 
     @Transactional
     @POST
     public Response save(@Context UriInfo uriInfo, Vehicle vehicle) {
-        var carExists = false;
         Log.info("save -> " + vehicle);
 
         // is the car existing?
         if (vehicle.getId() != null) {
             // checking, if a car with the given id exists
-            var v = vehicleRepository.findById(vehicle.getId());
-            if (v == null) {
-                //throw new WebApplicationException("Car with this id is not existing", Response.Status.CONFLICT);
-                Log.info("save: car with this id is not existing");
-                return Response
-                        .notModified()
-                        .header("reason", "car with this id is not existing")
-                        .build();
-            } else {
+            var existingVehicle = vehicleRepository.findById(vehicle.getId());
+            if (existingVehicle != null) {
                 Log.info("save: vehicle is null");
                 return Response
                         .notModified()
@@ -77,23 +72,25 @@ public class VehicleResource {
             }
         }
 
-        if (!carExists) {
-            var v = vehicleRepository.getEntityManager().merge(vehicle);
-            Log.info(v.toString());
-            //vehicleRepository.persist(vehicle);
-            //Log.info(vehicle.getId());
-            UriBuilder uriBuilder = uriInfo
-                    .getAbsolutePathBuilder()
-                    .path(v.getId().toString());
-            return Response.created(uriBuilder.build()).build();
-        }
 
-        Log.info("undetermined problem has occured");
+//        //throw new WebApplicationException("Car with this id is not existing", Response.Status.CONFLICT);
+//        Log.info("save: car with this id is not existing");
+//        return Response
+//                .notModified()
+//                .header("reason", "car with this id is not existing")
+//                .build();
 
-        return Response
-                .notModified()
-                .header("reason", "undetermined problem has occured")
-                .build();
+
+
+        var v = vehicleRepository.getEntityManager().merge(vehicle);
+        Log.info(v.toString());
+        //vehicleRepository.persist(vehicle);
+        //Log.info(vehicle.getId());
+        UriBuilder uriBuilder = uriInfo
+                .getAbsolutePathBuilder()
+                .path(v.getId().toString());
+        return Response.created(uriBuilder.build()).build();
+
 
     }
 
@@ -203,10 +200,26 @@ public class VehicleResource {
     @Path("initdata")
     @Produces(MediaType.TEXT_PLAIN)
     public Response initData() {
-        imageRepository.deleteAll();
-        vehicleRepository.deleteAll();
-        initBean.insertData();
+        vehicleRepository.initializeDatabase();
         return Response.ok("demo-data restored").build();
     }
+
+    /**
+     * Upload an image for a vehicle.
+     */
+//    @POST
+//    @Path("{id}/image")
+//    public Response upload(@PathParam("id") Long id,
+//                           @FormParam("file") FileUpload upload) {
+//        if (upload == null) {
+//            return Response.status(Response.Status.BAD_REQUEST).entity("Datei fehlt").build();
+//        }
+//        try (var in = upload.openStream()) {
+//            String stored = vehicleRepository.uploadImage(id, upload.fileName(), in);
+//            return Response.ok().entity("{\"imagePath\":\"" + stored + "\"}").build();
+//        } catch (IOException e) {
+//            return Response.serverError().entity("Upload fehlgeschlagen").build();
+//        }
+//    }
 
 }

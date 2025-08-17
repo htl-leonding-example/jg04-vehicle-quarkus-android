@@ -1,0 +1,25 @@
+@startuml
+
+left to right direction
+skinparam linetype polyline
+
+class Image {
+  + Image(vehicle: Vehicle, fileName: String):
+  + Image():
+  - id: Long
+  - vehicle: Vehicle
+  - fileName: String
+  - imageData: byte[]
+  - sizeInBytes: int
+}
+class Vehicle {
+  + Vehicle(brand: String, model: String, year int):
+  + Vehicle():
+  - id: Long
+  - brand: String
+  - model: String
+  - year: int
+}
+
+Vehicle "vehicle\n1" <--- "*" Image
+@enduml

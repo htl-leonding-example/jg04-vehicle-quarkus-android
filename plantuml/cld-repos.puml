@@ -1,0 +1,19 @@
+@startuml
+
+left to right direction
+skinparam linetype ortho
+
+class InitBean {
+  ~ init(StartupEvent): void
+}
+
+class VehicleNotFoundException {}
+
+class VehicleRepository {
+  + findByBrandAndModel(brand: String, model: String): Vehicle
+  + uploadImage(vehicleId: long, fileName: String): Long
+  + initializeDatabase(): void
+  + insertDataIntoVehicleAndImage(): void
+}
+
+@enduml

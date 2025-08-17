@@ -8,5 +8,6 @@ public record VehicleDto(
         String brand,
         String model,
         int year,
-        List<String> imageFileNames
+        List<String> imageFileNames,
+        List<byte[]> imageData
 ) { }

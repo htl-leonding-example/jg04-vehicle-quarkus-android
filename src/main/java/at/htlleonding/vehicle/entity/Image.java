@@ -23,6 +23,9 @@ public class Image {
     @Column(name = "I_IMAGE_DATA", columnDefinition = "BLOB")
     private byte[] imageData;
 
+    @Column(name = "I_SIZE_BYTES")
+    private int sizeInBytes;
+
     public Image(Vehicle vehicle, String fileName) {
         this.vehicle = vehicle;
         this.fileName = fileName;
@@ -61,5 +64,13 @@ public class Image {
 
     public void setImageData(byte[] imageData) {
         this.imageData = imageData;
+    }
+
+    public int getSizeInBytes() {
+        return sizeInBytes;
+    }
+
+    public void setSizeInBytes(int sizeInBytes) {
+        this.sizeInBytes = sizeInBytes;
     }
 }

@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "VE_VEHICLE")
+@Table(
+        name = "VE_VEHICLE",
+        uniqueConstraints = @UniqueConstraint(name = "UQ_VEHICLE_BRAND_MODEL", columnNames = {"V_BRAND", "V_MODEL"}))
 @SequenceGenerator(name = "vehicleSeq", sequenceName = "VE_VEHICLE_SEQ", allocationSize = 1)
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Vehicle {
@@ -64,12 +66,14 @@ public class Vehicle {
         this.year = year;
     }
 
+
     @Override
     public String toString() {
         return "Vehicle{" +
-                "id=" + id +
-                ", brand='" + brand + '\'' +
-                ", model='" + model + '\'' +
-                '}';
+               "id=" + id +
+               ", brand='" + brand + '\'' +
+               ", model='" + model + '\'' +
+               ", year=" + year +
+               '}';
     }
 }

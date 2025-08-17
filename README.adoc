@@ -16,26 +16,35 @@ ifdef::env-github[]
 :warning-caption: :warning:
 endif::[]
 
-* Es werden die Daten im JSON-Format als auch FORM-URLENCODED verarbeitet
 
-* mit `/vehicle/initdata` wird die Datenbank zurückgesetzt
+== Aufgabenstellung
 
-* die http-Methoden werden auf der Konsole geloggt:
-+
-image::request-logs.png[]
+* REST-API für Fahrzeuge, mit folgenden Funktionalitäten (Backend):
 
+** Fahrzeuge anlegen, ändern, löschen und abfragen
+** Fahrzeuge nach verschiedenen Kriterien suchen
+** Bilder zu Fahrzeugen hochladen und herunterladen
+** Fahrzeuge in einer Datenbank persistieren
 
+* Frontend für die REST-API, um deren Funktionalitäten ausführen zu können.
 
-* Swagger: http://localhost:8090/q/swagger-ui/
+== Implementierungshinweise
 
-* Bilder:
-** http://localhost:8090/download/ford-torino-1969.jpeg[^]
-** http://localhost:8090/download/volkswagen-beetle-1975.jpeg[^]
-** ...
+* Backend: Quarkus
+** Das Repository-Pattern ist zu verwenden
+** Persistierung mit Panache Persistence (Hibernate ORM)
 
-* Folgende Bilder stehen zur Verfügung:
+* Datenbank: H2 (network-mode)
+* Frontend: Angular
 
+* Bilder: Im Verzeichnis `src/main/resources/META-INF/resources/download/` stehen die Bilder der einzelnen Fahrzeuge tur Verfügung. Dies ermöglicht den direkten Zugriff auf die Bilder über den Webserver: zB http://localhost:8080/download/ford-torino-1969.jpeg
+
+.Folgende Bilder stehen zur Verfügung: [Click to expand]
+[%collapsible]
+====
+* Bilder
 ** alfa-romeo-2000-berlina-1971.jpeg
+** alfa-romeo-2000-berlina-1971-2.jpeg
 ** buick-century-riviera-1955.jpeg
 ** buick-gsx-1970.jpeg
 ** chevrolet-impala-1960.jpeg
@@ -55,8 +64,74 @@ image::request-logs.png[]
 ** pontiac-gto-1967.jpeg
 ** pontiac-streamliner-1949.jpg
 ** renault-grand-scenic-2018.png
-** volkswagen-beetle-1975-2.jpeg
 ** volkswagen-beetle-1975.jpeg
+** volkswagen-beetle-1975-2.jpeg
 
 * Zusätzlich noch
 ** missing-image.png
+====
+
+=== Klassendiagramm
+
+image::cld.png[]
+
+
+=== Entity-Relationship-Diagramm
+
+image::erd.png[]
+
+* Für die Vergabe der werden Sequenz-Objekte verwendet, die automatisch um je 1 hochgezählt werden.
+** Vehicle: Java Name: `vehicleSeq`, SQL Name: `VE_VEHICLE_SEQ`
+** Image: Java Name: `imageSeq`, SQL Name: `VE_IMAGE_SEQ`, Beginnwert: 1000
+
+* Eine Constraint auf Tabellenebene (`UQ_VEHICLE_BRAND_MODEL`) verhindert, dass zwei Fahrzeuge mit der gleichen Marke und dem gleichen Modell angelegt werden können.
+
+=== Initialisieren der Datenbank
+
+Beim Starten der Anwendung wird die Datenbank automatisch mit einigen Fahrzeugen initialisiert.
+
+* Tabelle VE_VHEHICLE
++
+image::table-vehicle-init.png[]
+
+* Tabelle VE_IMAGE
++
+image::table-image-init.png[]
+
+Zum Speichern der Bilder verwenden sie KEIN SQL-Skript, sondern speichern die Bilder aus einer Java Methode heraus in die DB.
+
+TIP: Beachten Sie, dass noch keine Bilder in die Tabelle gespeichert werden. Diese sind separat hochzuladen.
+
+=== Repositories
+
+image::cld-repos.png[]
+
+* uploadImage(...) gibt die Id des ev. erstellten Image-Datensatzes zurück. wird die vehicleId nicht gefunden wird die `VehicleNotFoundException` geworfen.
+
+* initializeDatabase() löscht alle Datensätze in den Tabellen `VE_VEHICLE` und `VE_IMAGE` und fügt die Initial-Datensätze wieder hinzu.
+
+* insertDataIntiVehicleAndImage() fügt die Initial-Datensätze in die Tabellen `VE_VEHICLE` und `VE_IMAGE` ein.
+
+* findByBrandandModel(): wird kein Fahrzeug mit der angegebenen Marke und dem angegebenen Modell gefunden, wird ein le
+
+
+
+
+=== REST-API
+
+* Swagger: http://localhost:8090/q/swagger-ui/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
