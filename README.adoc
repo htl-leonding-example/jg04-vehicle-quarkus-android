@@ -107,13 +107,15 @@ TIP: Beachten Sie, dass noch keine Bilder in die Tabelle gespeichert werden. Die
 image::cld-repos.png[]
 
 * uploadImage(...) gibt die Id des ev. erstellten Image-Datensatzes zurück. wird die vehicleId nicht gefunden wird die `VehicleNotFoundException` geworfen.
++
+TIP: Hierfür steht ein Unit-Test zur Verfügung.
+
 
 * initializeDatabase() löscht alle Datensätze in den Tabellen `VE_VEHICLE` und `VE_IMAGE` und fügt die Initial-Datensätze wieder hinzu.
 
 * insertDataIntiVehicleAndImage() fügt die Initial-Datensätze in die Tabellen `VE_VEHICLE` und `VE_IMAGE` ein.
 
-* findByBrandandModel(): wird kein Fahrzeug mit der angegebenen Marke und dem angegebenen Modell gefunden, wird ein le
-
+* findByBrandAndModel(): Sucht Fahrzeuge nach Marke und Modell. Es wird jenes Fahrzeug zurückgegeben, das den Suchkriterien entspricht.
 
 
 
@@ -121,13 +123,15 @@ image::cld-repos.png[]
 
 * Swagger: http://localhost:8090/q/swagger-ui/
 
+* Verwenden sie dtos für die Kommunikation zwischen Frontend und Backend.
+
+to be continued ...
 
 
+=== Frontend
 
 
-
-
-
+to be continued ...
 
 
 

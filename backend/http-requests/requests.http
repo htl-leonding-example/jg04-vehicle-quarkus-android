@@ -1,11 +1,16 @@
 ### list all vehicles
 
-GET http://localhost:8090/vehicle
+GET http://localhost:{{port}}/vehicle
+Content-Type: application/json
+
+### list all vehicles with images
+
+GET http://localhost:{{port}}/vehicle/img
 Content-Type: application/json
 
 ### create vehicle
 
-POST http://localhost:8090/vehicle
+POST http://localhost:{{port}}/vehicle
 Content-Type: application/json
 
 {
@@ -16,7 +21,7 @@ Content-Type: application/json
 
 ### create vehicle - id is not existing
 
-POST http://localhost:8090/vehicle
+POST http://localhost:{{port}}/vehicle
 Content-Type: application/json
 
 
@@ -29,7 +34,7 @@ Content-Type: application/json
 
 ### create vehicle - id exists already
 
-POST http://localhost:8090/vehicle
+POST http://localhost:{{port}}/vehicle
 Content-Type: application/json
 
 {
@@ -41,17 +46,17 @@ Content-Type: application/json
 
 ### findById - id not existing
 
-GET http://localhost:8090/vehicle/1234567
+GET http://localhost:{{port}}/vehicle/1234567
 Content-Type: application/json
 
 ### findById - id is existing
 
-GET http://localhost:8090/vehicle/20
+GET http://localhost:{{port}}/vehicle/20
 Content-Type: application/json
 
 ### update - alle Felder
 
-PATCH http://localhost:8090/vehicle
+PATCH http://localhost:{{port}}/vehicle
 Content-Type: application/json
 
 {
@@ -63,7 +68,7 @@ Content-Type: application/json
 
 ### update - nur ein Feld
 
-PATCH http://localhost:8090/vehicle
+PATCH http://localhost:{{port}}/vehicle
 Content-Type: application/json
 
 {
@@ -74,7 +79,7 @@ Content-Type: application/json
 ###
 ### PUT - alle Felder
 
-PUT http://localhost:8090/vehicle
+PUT http://localhost:{{port}}/vehicle
 Content-Type: application/json
 
 {
@@ -86,7 +91,7 @@ Content-Type: application/json
 
 ### PUT - nur ein Feld
 
-PUT http://localhost:8090/vehicle
+PUT http://localhost:{{port}}/vehicle
 Content-Type: application/json
 
 {
@@ -96,12 +101,12 @@ Content-Type: application/json
 
 ### DELETE
 
-DELETE http://localhost:8090/vehicle/1
+DELETE http://localhost:{{port}}/vehicle/1
 Content-Type: application/json
 
 ### list all vehicles with filenames
 
-GET http://localhost:8090/vehicle/img
+GET http://localhost:{{port}}/vehicle/img
 Content-Type: application/json
 
 ###
