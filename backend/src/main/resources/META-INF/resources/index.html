@@ -1,0 +1,16 @@
+<!-- HTML -->
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Bild-Upload für Fahrzeug</title>
+</head>
+<body>
+<h1>Bild für Fahrzeug hochladen</h1>
+<form action="/vehicle/1000/upload" method="post" enctype="multipart/form-data">
+    <label for="file">Bild auswählen:</label>
+    <input type="file" id="file" name="file" accept="image/*" required>
+    <button type="submit">Hochladen</button>
+</form>
+</body>
+</html>

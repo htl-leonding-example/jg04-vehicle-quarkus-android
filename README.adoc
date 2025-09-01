@@ -37,7 +37,7 @@ endif::[]
 * Datenbank: H2 (network-mode)
 * Frontend: Angular
 
-* Bilder: Im Verzeichnis `src/main/resources/META-INF/resources/download/` stehen die Bilder der einzelnen Fahrzeuge tur Verfügung. Dies ermöglicht den direkten Zugriff auf die Bilder über den Webserver: zB http://localhost:8080/download/ford-torino-1969.jpeg
+* Bilder: Im Verzeichnis `src/main/resources/META-INF/resources/download/` stehen die Bilder der einzelnen Fahrzeuge zur Verfügung. Dies ermöglicht den direkten Zugriff auf die Bilder über den Webserver: zB http://localhost:8080/download/ford-torino-1969.jpeg
 
 .Folgende Bilder stehen zur Verfügung: [Click to expand]
 [%collapsible]
@@ -113,7 +113,7 @@ TIP: Hierfür steht ein Unit-Test zur Verfügung.
 
 * initializeDatabase() löscht alle Datensätze in den Tabellen `VE_VEHICLE` und `VE_IMAGE` und fügt die Initial-Datensätze wieder hinzu.
 
-* insertDataIntiVehicleAndImage() fügt die Initial-Datensätze in die Tabellen `VE_VEHICLE` und `VE_IMAGE` ein.
+* insertDataIntoVehicleAndImage() fügt die Initial-Datensätze in die Tabellen `VE_VEHICLE` und `VE_IMAGE` ein.
 
 * findByBrandAndModel(): Sucht Fahrzeuge nach Marke und Modell. Es wird jenes Fahrzeug zurückgegeben, das den Suchkriterien entspricht.
 

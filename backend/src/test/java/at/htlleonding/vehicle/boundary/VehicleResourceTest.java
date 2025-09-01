@@ -16,7 +16,6 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 class VehicleResourceTest {
@@ -43,7 +42,7 @@ class VehicleResourceTest {
         purge();
         Vehicle v = new Vehicle("Alfa Romeo", "Berlina 2000", 1971);
         vehicleRepository.persist(v);
-        vehicleRepository.uploadImage(v.getId(), "alfa-romeo-2000-berlina-1971.jpeg");
+        vehicleRepository.uploadImageFromFile(v.getId(), "alfa-romeo-2000-berlina-1971.jpeg");
 
         // Act
         Response response = given()

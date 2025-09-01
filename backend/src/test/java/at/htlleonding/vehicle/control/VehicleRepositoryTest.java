@@ -78,7 +78,7 @@ class VehicleRepositoryTest {
         long imageId;
 
         QuarkusTransaction.begin();
-        imageId = vehicleRepository.uploadImage(vehicle.getId(), originalName);
+        imageId = vehicleRepository.uploadImageFromFile(vehicle.getId(), originalName);
         QuarkusTransaction.commit();
 
 

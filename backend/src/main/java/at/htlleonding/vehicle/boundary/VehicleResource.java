@@ -12,7 +12,11 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
+import org.jboss.resteasy.reactive.multipart.FileUpload;
 
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 @Path("/vehicle")
@@ -207,19 +211,70 @@ public class VehicleResource {
     /**
      * Upload an image for a vehicle.
      */
-//    @POST
-//    @Path("{id}/image")
-//    public Response upload(@PathParam("id") Long id,
-//                           @FormParam("file") FileUpload upload) {
-//        if (upload == null) {
-//            return Response.status(Response.Status.BAD_REQUEST).entity("Datei fehlt").build();
-//        }
+    @POST
+    @Path("{id}/image")
+    @Transactional
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response upload(@PathParam("id") Long vehicleId,
+                           @FormParam("file") FileUpload upload) {
+
+        // Validate input
+        if (upload == null) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"File is required\n\"}")
+                    .build();
+        }
+
+        // Validate file size (e.g., 30MB limit)
+        if (upload.size() > 30 * 1024 * 1024) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"File too large\"}")
+                    .build();
+        }
+
+        // Validate file type
+        String contentType = upload.contentType();
+        if (!isValidImageType(contentType)) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                    .entity("{\"error\":\"Invalid file type\"}")
+                    .build();
+        }
+
+        // Sanitize filename
+        String sanitizedFilename = sanitizeFilename(upload.fileName());
+
+        try (InputStream in = new FileInputStream(upload.file())) {
+            Long imageId = vehicleRepository.uploadImage(vehicleId, sanitizedFilename, in);
+            return Response.ok().entity("{\"imageId\":\"" + imageId + "\"}").build();
+        } catch (IOException e) {
+            return Response.serverError().entity("Upload fehlgeschlagen").build();
+        }
+
+
 //        try (var in = upload.openStream()) {
 //            String stored = vehicleRepository.uploadImage(id, upload.fileName(), in);
 //            return Response.ok().entity("{\"imagePath\":\"" + stored + "\"}").build();
 //        } catch (IOException e) {
 //            return Response.serverError().entity("Upload fehlgeschlagen").build();
 //        }
-//    }
+    }
+
+    private boolean isValidImageType(String contentType) {
+        return contentType != null &&
+               (contentType.equals("image/jpeg") ||
+                contentType.equals("image/png") ||
+                contentType.equals("image/gif"));
+    }
+
+    private String sanitizeFilename(String filename) {
+        if (filename == null) return "unknown";
+        return filename.replaceAll("[^a-zA-Z0-9._-]", "_");
+    }
+
+    private String escapeJson(String value) {
+        return value.replace("\"", "\\\"").replace("\\", "\\\\");
+    }
+
 
 }

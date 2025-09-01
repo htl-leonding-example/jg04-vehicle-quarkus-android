@@ -6,7 +6,6 @@ import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import io.quarkus.logging.Log;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import java.io.IOException;
@@ -37,7 +36,7 @@ public class VehicleRepository implements PanacheRepository<Vehicle> {
      *
      * @return ID des neu erzeugten Image-Datensatzes
      */
-    public Long uploadImage(Long vehicleId, String originalFileName) {
+    public Long uploadImageFromFile(Long vehicleId, String originalFileName) {
         Objects.requireNonNull(vehicleId, "vehicleId darf nicht null sein");
         Objects.requireNonNull(originalFileName, "originalFileName darf nicht null sein");
 
@@ -187,4 +186,26 @@ public class VehicleRepository implements PanacheRepository<Vehicle> {
         imageRepository.persist(i);
 
     }
+
+    // Java
+    public Long uploadImage(Long vehicleId, String originalFileName, InputStream imageStream) {
+        Vehicle vehicle = findById(vehicleId);
+        if (vehicle == null) throw new VehicleNotFoundException(vehicleId);
+
+        Image image = new Image();
+        byte[] bytes = null;
+        try {
+            bytes = imageStream.readAllBytes();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        image.setVehicle(vehicle);
+        image.setFileName(originalFileName);
+        image.setImageData(bytes);
+        image.setSizeInBytes(bytes.length);
+
+        imageRepository.persist(image);
+        return image.getId();
+    }
+
 }
