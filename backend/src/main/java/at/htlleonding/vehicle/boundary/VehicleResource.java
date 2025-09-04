@@ -8,15 +8,18 @@ import at.htlleonding.vehicle.entity.VehicleMapper;
 import at.htlleonding.vehicle.entity.dto.VehicleDto;
 import io.quarkus.logging.Log;
 import io.quarkus.panache.common.Sort;
+import io.quarkus.vertx.web.Param;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.*;
 import org.jboss.resteasy.reactive.multipart.FileUpload;
 
+import java.io.ByteArrayInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Base64;
 import java.util.List;
 
 @Path("/vehicle")
@@ -53,8 +56,6 @@ public class VehicleResource {
                 .toList();
 
 
-
-
         return Response.ok(dtos).build();
     }
 
@@ -83,7 +84,6 @@ public class VehicleResource {
 //                .notModified()
 //                .header("reason", "car with this id is not existing")
 //                .build();
-
 
 
         var v = vehicleRepository.getEntityManager().merge(vehicle);
@@ -212,17 +212,17 @@ public class VehicleResource {
      * Upload an image for a vehicle.
      */
     @POST
-    @Path("{id}/image")
+    @Path("{vehicleid}/image")
     @Transactional
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response upload(@PathParam("id") Long vehicleId,
+    public Response upload(@PathParam("vehicleid") Long vehicleId,
                            @FormParam("file") FileUpload upload) {
 
         // Validate input
         if (upload == null) {
             return Response.status(Response.Status.BAD_REQUEST)
-                    .entity("{\"error\":\"File is required\n\"}")
+                    .entity("{\"error\":\"File is required\"}")
                     .build();
         }
 
@@ -244,7 +244,7 @@ public class VehicleResource {
         // Sanitize filename
         String sanitizedFilename = sanitizeFilename(upload.fileName());
 
-        try (InputStream in = new FileInputStream(upload.file())) {
+        try (InputStream in = new FileInputStream(upload.uploadedFile().toFile())) {
             Long imageId = vehicleRepository.uploadImage(vehicleId, sanitizedFilename, in);
             return Response.ok().entity("{\"imageId\":\"" + imageId + "\"}").build();
         } catch (IOException e) {
@@ -277,4 +277,35 @@ public class VehicleResource {
     }
 
 
+    @GET
+    @Path("{vehicleId}/images")
+    @Produces(MediaType.TEXT_HTML)
+    public Response getVehicleImagesHtml(@PathParam("vehicleId") Long vehicleId) {
+        List<byte[]> images = vehicleRepository.getAllImagesByVehicleId(vehicleId);
+        StringBuilder html = new StringBuilder("<html><body>");
+        for (byte[] img : images) {
+            if (img != null) {
+                String base64 = Base64.getEncoder().encodeToString(img);
+                html.append("<img src=\"data:image/jpeg;base64,")
+                        .append(base64)
+                        .append("\" width=\"500\" />");
+            }
+        }
+        html.append("</body></html>");
+        return Response.ok(html.toString()).build();
+    }
+
+    @GET
+    @Path("/image")
+    @Produces("image/jpeg")
+    public Response getVehicleImageByImageId(
+            @QueryParam("imageid") Long imageId
+    ) {
+        byte[] imageData = imageRepository.findById(imageId).getImageData();
+        if (imageData == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(imageData).build();
+    }
 }
+

@@ -58,7 +58,7 @@ class VehicleRepositoryTest {
         Table imageTableBefore = conn.table("ve_image").build();
         int beforeCountImage = imageTableBefore.getRowsList().size();
         output(imageTableBefore).toConsole();
-        org.assertj.core.api.Assertions.assertThat(beforeCountImage).isEqualTo(21);
+        org.assertj.core.api.Assertions.assertThat(beforeCountImage).isEqualTo(22);
 
         // Act
         // Vehicle anlegen
@@ -79,6 +79,7 @@ class VehicleRepositoryTest {
 
         QuarkusTransaction.begin();
         imageId = vehicleRepository.uploadImageFromFile(vehicle.getId(), originalName);
+        Log.info("Image uploaded with ID: " + imageId);
         QuarkusTransaction.commit();
 
 
@@ -119,8 +120,8 @@ class VehicleRepositoryTest {
                 .build();
 
         assertThat(requestTestImages)
-                .hasNumberOfRows(1)
-                .row()
+                .hasNumberOfRows(23)
+                .row(22)
                 .value("i_id").isEqualTo(imageId)
                 .value("i_size_bytes").isEqualTo(288204)
                 .value("i_v_id").isEqualTo(vehicle.getId());

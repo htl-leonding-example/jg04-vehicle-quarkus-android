@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Single Image</title>
+</head>
+<body>
+  <img id="vehicleImage" alt="Image" width="500"/>
+  <script>
+    // imageid aus der URL holen
+    const params = new URLSearchParams(window.location.search);
+    const imageId = params.get('imageid');
+    if (imageId) {
+      document.getElementById('vehicleImage').src = `/vehicle/image?imageid=${imageId}`;
+    }
+  </script>
+</body>
+</html>

@@ -6,7 +6,7 @@ Content-Type: application/json
 ### list all vehicles with images
 
 GET http://localhost:{{port}}/vehicle/img
-Content-Type: application/json
+Accept: application/json
 
 ### create vehicle
 
@@ -108,5 +108,10 @@ Content-Type: application/json
 
 GET http://localhost:{{port}}/vehicle/img
 Content-Type: application/json
+
+### get image for vehicle with id 1000
+
+GET http://localhost:{{port}}/vehicle/image?imageid=1002
+Accept: image/jpeg
 
 ###

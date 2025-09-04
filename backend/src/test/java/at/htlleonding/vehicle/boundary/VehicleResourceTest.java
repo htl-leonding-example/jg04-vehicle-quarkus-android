@@ -4,6 +4,7 @@ import at.htlleonding.vehicle.control.ImageRepository;
 import at.htlleonding.vehicle.control.VehicleRepository;
 import at.htlleonding.vehicle.entity.Vehicle;
 import io.quarkus.test.junit.QuarkusTest;
+import io.restassured.RestAssured;
 import io.restassured.response.Response;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,8 +18,21 @@ import static io.restassured.RestAssured.given;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON;
 import static org.assertj.core.api.Assertions.assertThat;
 
+
+/**
+ * https://learn.microsoft.com/en-us/dotnet/core/testing/unit-testing-best-practices#follow-test-naming-standards
+ *
+ * The name of your test should consist of three parts:
+ *
+ *     Name of the method being tested
+ *     Scenario under which the method is being tested
+ *     Expected behavior when the scenario is invoked
+ *
+ */
 @QuarkusTest
 class VehicleResourceTest {
+
+    final String BASE_URL = "http://localhost:8081";
 
     @ConfigProperty(name = "media.image.base-path")
     String imageBasePath;
@@ -29,6 +43,26 @@ class VehicleResourceTest {
     @Inject
     ImageRepository imageRepository;
 
+    @Test
+    void findAll_vehiclesExistsInDatabase_returnsJsonArraySortedByBrandAndModel() {
+        Response response = given()
+                .accept(APPLICATION_JSON)
+                .get(BASE_URL + "/vehicle");
+
+        assertThat(response.getStatusCode()).isEqualTo(200);
+        assertThat(response.getBody().asString()).isNotEmpty();
+        List<Map<String, Object>> vehicles = response.jsonPath().getList("$");
+
+        // Extrahiere die Marken und Modelle
+        List<String> brandsAndModels = vehicles.stream()
+                .map(v -> v.get("brand") + " " + v.get("model"))
+                .toList();
+        // Überprüfe, ob die Liste sortiert ist
+        List<String> sortedBrandsAndModels = brandsAndModels.stream().sorted().toList();
+        assertThat(brandsAndModels).isEqualTo(sortedBrandsAndModels);
+
+
+    }
 
     /**
      * delete all images and vehicles in the db
