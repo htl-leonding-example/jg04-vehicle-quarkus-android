@@ -100,7 +100,7 @@ image::table-image-init.png[]
 
 Zum Speichern der Bilder verwenden sie KEIN SQL-Skript, sondern speichern die Bilder aus einer Java Methode heraus in die DB.
 
-TIP: Beachten Sie, dass noch keine Bilder in die Tabelle gespeichert werden. Diese sind separat hochzuladen.
+TIP: Beachten Sie, dass das Hochladen der Bilder in die Tabelle separat in einem zweiten Schritt durchzuführen ist.
 
 === Repositories
 
@@ -130,6 +130,11 @@ to be continued ...
 
 === Frontend
 
+* Erstellen Sie ein Formular, in dem sämtliche Fahrzeuge ngezeigt werden.
+
+* Beim Klick auf ein Fahrzeug werden die Details (vor allem die Bilder) des Fahrzeugs angezeigt und können geändert werden. Bilder können zu einem Fahrzeug hinzugefügt werden.
+
+* Neue Fahrzeuge können angelegt und bestehende Fahrzeuge gelöscht werden.
 
 to be continued ...
 
